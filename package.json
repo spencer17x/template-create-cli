@@ -1,0 +1,23 @@
+{
+  "name": "rui-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Code.X <1253478653@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "commit": "git add . && git-cz"
+  },
+  "bin": {
+    "create-react-ui": "bin/index.js"
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "commander": "^4.0.1",
+    "download-git-repo": "^3.0.2",
+    "inquirer": "^7.0.1",
+    "ora": "^4.0.3"
+  },
+  "devDependencies": {
+    "git-cz": "^3.3.0"
+  }
+}
