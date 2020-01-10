@@ -6,7 +6,7 @@
 
 ## 初始化项目
 
-```$ create-react-ui```
+```$ rui-app init```
 
 ## 说明
 
