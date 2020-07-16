@@ -8,7 +8,7 @@
     "commit": "git add . && git-cz"
   },
   "bin": {
-    "rui-app": "bin/index.js"
+    "t-create": "bin/index.js"
   },
   "dependencies": {
     "chalk": "^3.0.0",
