@@ -1,7 +1,7 @@
 {
   "name": "template-create-cli",
   "version": "1.1.0",
-  "main": "index.js",
+  "main": "bin/index.js",
   "author": "Code.X <1253478653@qq.com>",
   "license": "MIT",
   "scripts": {
@@ -19,6 +19,13 @@
     "ora": "^4.0.3"
   },
   "devDependencies": {
-    "git-cz": "^3.3.0"
+    "@types/node": "^14.0.23",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb-typescript": "^8.0.2",
+    "eslint-plugin-import": "^2.20.1",
+    "git-cz": "^3.3.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.6"
   }
 }

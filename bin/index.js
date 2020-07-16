@@ -1,2 +1,3 @@
 #!/usr/bin/env node
-require('../src');
+require('ts-node').register();
+require('../src/index.ts');
