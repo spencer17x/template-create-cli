@@ -1,5 +1,5 @@
 {
-  "name": "rui-app",
+  "name": "template-create-cli",
   "version": "1.1.0",
   "main": "index.js",
   "author": "Code.X <1253478653@qq.com>",
@@ -8,7 +8,7 @@
     "commit": "git add . && git-cz"
   },
   "bin": {
-    "t-create": "bin/index.js"
+    "init": "bin/index.js"
   },
   "dependencies": {
     "chalk": "^3.0.0",
