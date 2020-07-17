@@ -4,7 +4,9 @@ import * as ora from 'ora';
 
 const questions = [
   { name: 'projectName', message: '请输入项目名称', default: 'my-app' },
-  { name: 'template', message: '请选择模板', type: 'list', choices: ['react-ui-template'] }
+  {
+    name: 'template', message: '请选择模板', type: 'list', choices: ['react-ui-template']
+  }
 ];
 
 interface Answers {
@@ -21,17 +23,22 @@ interface TemplateInitOptions {
 }
 
 class TemplateInit {
-
   public options: TemplateInitOptions;
 
   constructor(options: TemplateInitOptions) {
     this.options = options;
   }
 
+  /**
+   * 初始化入口
+   */
   init() {
     this.downloadRepo();
   }
 
+  /**
+   * 拉取模板
+   */
   downloadRepo() {
     const spinner = ora('fetch template....').start();
     const { answers: { template, projectName }, owner, branch } = this.options;
@@ -41,8 +48,8 @@ class TemplateInit {
       tempUrl,
       projectName,
       { clone: true },
-      function (err: string) {
-        console.log(err ? err : 'Success');
+      (err: string) => {
+        console.log(err || 'Success');
         spinner.stop();
       }
     );

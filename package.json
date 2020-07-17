@@ -21,10 +21,6 @@
   "devDependencies": {
     "@types/inquirer": "^6.5.0",
     "@types/node": "^14.0.23",
-    "@typescript-eslint/eslint-plugin": "^3.1.0",
-    "eslint": "^7.4.0",
-    "eslint-config-airbnb-typescript": "^8.0.2",
-    "eslint-plugin-import": "^2.20.1",
     "git-cz": "^3.3.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
