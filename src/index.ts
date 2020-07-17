@@ -1,5 +1,6 @@
-const inquirer = require('inquirer');
-const downloadGitRepo = require('download-git-repo');
+import * as inquirer from 'inquirer';
+import * as downloadGitRepo from 'download-git-repo';
+import * as ora from 'ora';
 
 const questions = [
   { name: 'projectName', message: '请输入项目名称', default: 'my-app' },
@@ -7,50 +8,55 @@ const questions = [
 ];
 
 interface Answers {
-  projectName: string;
   template: string;
+  projectName: string;
+
+  [k: string]: string;
+}
+
+interface TemplateInitOptions {
+  answers: Answers;
+  owner: string;
+  branch: string;
 }
 
 class TemplateInit {
 
-  public answers: Answers;
+  public options: TemplateInitOptions;
 
-  constructor(options: Answers) {
-    this.answers = options;
+  constructor(options: TemplateInitOptions) {
+    this.options = options;
   }
 
   init() {
-    // answers: { projectName: 'my-app', template: 'react-ui-template' }
-    const { template, projectName } = this.answers;
-    this.downloadRepo(
-      template,
-      'master',
-      projectName
-    );
+    this.downloadRepo();
   }
 
-  downloadRepo(
-    repo = 'react-ui-template',
-    branch = 'master',
-    projectName = 'my-app'
-  ) {
-    const tempUrl = `https://github.com/Spencer17x/${repo}#${branch}`;
-    console.log(tempUrl);
+  downloadRepo() {
+    const spinner = ora('fetch template....').start();
+    const { answers: { template, projectName }, owner, branch } = this.options;
+    const tempUrl = `https://github.com:${owner}/${template}#${branch}`;
+    console.log('\ntempUrl', tempUrl);
     downloadGitRepo(
       tempUrl,
       projectName,
       { clone: true },
       function (err: string) {
-        console.log(err);
-        console.log(err ? 'Error' : 'Success');
-      });
+        console.log(err ? err : 'Success');
+        spinner.stop();
+      }
+    );
   }
 }
 
 inquirer
   .prompt(questions)
   .then((answers: Answers) => {
-    const temp = new TemplateInit(answers);
+    const temp = new TemplateInit({
+      answers,
+      owner: 'Spencer17x',
+      branch: 'master'
+    });
     temp.init();
   })
   .catch((error: string) => {
