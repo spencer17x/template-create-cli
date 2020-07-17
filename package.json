@@ -15,7 +15,7 @@
     "build": "rimraf dist && tsc"
   },
   "bin": {
-    "r-create": "bin/index.js"
+    "init": "bin/index.js"
   },
   "dependencies": {
     "chalk": "^3.0.0",
