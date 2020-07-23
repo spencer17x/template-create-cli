@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import downloadGitRepo from 'download-git-repo';
 import ora from 'ora';
 import fs from 'fs';
+import program from 'commander';
 
 interface TempMap {
   [K: string]: {
@@ -119,7 +120,10 @@ function launcher() {
     });
 }
 
+function configCommander() {
+  program
+    .version('0.0.1')
+}
 
-// 启动
-launcher();
+configCommander();
 
