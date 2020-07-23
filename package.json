@@ -10,9 +10,8 @@
   ],
   "scripts": {
     "commit": "git add . && git-cz",
-    "reload": "yarn unlink && yarn link",
-    "start": "tsc -w",
-    "build": "rimraf dist && tsc"
+    "build": "babel src -d dist --extensions '.ts' ",
+    "start": "npm run build -- --watch"
   },
   "bin": {
     "rui-app": "bin/index.js"
@@ -25,6 +24,10 @@
     "ora": "^4.0.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
     "@types/commander": "^2.12.2",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^14.0.23",
