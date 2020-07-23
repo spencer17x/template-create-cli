@@ -10,8 +10,9 @@
   ],
   "scripts": {
     "commit": "git add . && git-cz",
-    "build": "babel src -d dist --extensions '.ts' ",
-    "start": "npm run build -- --watch"
+    "build": "rimraf dist && rollup -c && yarn build:type",
+    "build:type": "tsc -p ./tsconfig.type.json",
+    "start": "yarn build --watch"
   },
   "bin": {
     "rui-app": "bin/index.js"
@@ -28,10 +29,12 @@
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@rollup/plugin-typescript": "^5.0.2",
     "@types/commander": "^2.12.2",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^14.0.23",
     "git-cz": "^3.3.0",
+    "rollup": "^2.22.2",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
   }
