@@ -1,12 +1,14 @@
-import * as inquirer from 'inquirer';
-import * as downloadGitRepo from 'download-git-repo';
-import * as ora from 'ora';
-import * as fs from 'fs';
+import inquirer from 'inquirer';
+import downloadGitRepo from 'download-git-repo';
+import ora from 'ora';
+import fs from 'fs';
 
-const questions = [
-  { name: 'projectName', message: '请输入项目名称', default: 'my-app' },
-  { name: 'template', message: '请选择模板', type: 'list', choices: ['react-ui-template'] }
-];
+interface TempMap {
+  [K: string]: {
+    owner: string;
+    branch: string;
+  }
+}
 
 interface Answers {
   template: string;
@@ -20,6 +22,28 @@ interface TemplateInitOptions {
   owner: string;
   branch: string;
 }
+
+const tempMapConfig: TempMap = {
+  'react-ui-template': {
+    owner: 'Spencer17x',
+    branch: 'master'
+  },
+  'TypeScript-React-Starter': {
+    owner: 'microsoft',
+    branch: 'master'
+  }
+};
+
+const questions = [
+  { name: 'projectName', message: '请输入项目名称', default: 'my-app' },
+  {
+    name: 'template', message: '请选择模板', type: 'list',
+    choices: [
+      'react-ui-template',
+      'TypeScript-React-Starter'
+    ]
+  }
+];
 
 class TemplateInit {
   public options: TemplateInitOptions;
@@ -79,16 +103,23 @@ class TemplateInit {
   }
 }
 
-inquirer
-  .prompt(questions)
-  .then((answers: Answers) => {
-    const temp = new TemplateInit({
-      answers,
-      owner: 'Spencer17x',
-      branch: 'master'
+function launcher() {
+  inquirer
+    .prompt(questions)
+    .then((answers: Answers) => {
+      const { template } = answers;
+      const temp = new TemplateInit({
+        ...tempMapConfig[template],
+        answers
+      });
+      temp.init();
+    })
+    .catch((error: string) => {
+      console.log('error', error);
     });
-    temp.init();
-  })
-  .catch((error: string) => {
-    console.log('error', error);
-  });
+}
+
+
+// 启动
+launcher();
+

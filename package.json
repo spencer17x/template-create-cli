@@ -25,6 +25,7 @@
     "ora": "^4.0.3"
   },
   "devDependencies": {
+    "@types/commander": "^2.12.2",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^14.0.23",
     "git-cz": "^3.3.0",

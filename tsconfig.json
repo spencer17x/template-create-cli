@@ -1,14 +1,18 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
-    "baseUrl": "./src",
+    "rootDir": ".",
+    "baseUrl": ".",
     "module": "commonjs",
     "target": "es5",
     "sourceMap": false,
     "declaration": true,
+    "declarationDir": "./dist",
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules"
