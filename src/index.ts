@@ -5,6 +5,7 @@ import fs from 'fs';
 import program from 'commander';
 import pkg from '../package.json';
 import chalk from 'chalk';
+import install from './utils/install';
 
 const error = chalk.bold.red;
 
@@ -16,7 +17,8 @@ interface TempMap {
 }
 
 interface Answers {
-  template: string;
+  template: 'react-ui-template' | 'TypeScript-React-Starter';
+  pkgManager: 'yarn' | 'npm';
 
   [k: string]: string;
 }
@@ -39,6 +41,13 @@ const questions = [
       'react-ui-template',
       'TypeScript-React-Starter'
     ]
+  },
+  {
+    name: 'pkgManager', message: '请选择包管理器', type: 'list',
+    choices: [
+      'yarn',
+      'npm'
+    ]
   }
 ];
 
@@ -53,14 +62,17 @@ const TemplateInit = {
         console.log(error('当前路径下存在同名的目录，请重新创建项目'));
         return;
       }
-      const answers: Answers = await inquirer.prompt(questions); // 回答问题
-      const { template } = answers;
+      const answers: Answers = await inquirer.prompt(questions); // 提问
+      const { template, pkgManager } = answers;
       const { owner, branch } = tempMapConfig[template]; // 模板选择
       const spinner = ora('fetch template....').start();
       const res = await this.downloadRepo(
         template, projectName, owner, branch
       );
       spinner.stop();
+      await install({
+        pkgManager, projectName
+      });
       console.log(res);
     } catch (err) {
       console.log(error(err));
@@ -120,10 +132,13 @@ function configCommand() {
     });
 
   program
-    .command('update')
+    .command('update [version]')
     .description('update rui-app')
-    .action(() => {
-      console.log('updating...');
+    .action((version: string = 'latest') => {
+      install({
+        pkgManager: 'yarn',
+        args: ['global', 'add', `@tarojs/cli@${version}`]
+      });
     });
 
   program.parse(process.argv);

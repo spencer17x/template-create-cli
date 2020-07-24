@@ -25,6 +25,7 @@
     "ora": "^4.0.3"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^8.4.0",
     "@rollup/plugin-typescript": "^5.0.2",
     "@types/commander": "^2.12.2",
     "@types/inquirer": "^6.5.0",
