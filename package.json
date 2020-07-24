@@ -10,9 +10,9 @@
   ],
   "scripts": {
     "commit": "git add . && git-cz",
-    "build": "rimraf dist && concurrently \"rollup -c\" \"yarn build:type\"",
-    "build:type": "tsc -p ./tsconfig.type.json",
-    "start": "rimraf dist && rollup -c -w"
+    "build": "rimraf dist && babel src -d dist --extensions '.ts' ",
+    "start": "yarn build -- --watch",
+    "build:type": "tsc -p ./tsconfig.type.json"
   },
   "bin": {
     "rui-app": "bin/index.js"
@@ -25,6 +25,10 @@
     "ora": "^4.0.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
     "@rollup/plugin-node-resolve": "^8.4.0",
     "@rollup/plugin-typescript": "^5.0.2",
     "@types/commander": "^2.12.2",

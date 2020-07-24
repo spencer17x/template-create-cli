@@ -137,7 +137,7 @@ function configCommand() {
     .action((version: string = 'latest') => {
       install({
         pkgManager: 'yarn',
-        args: ['global', 'add', `@tarojs/cli@${version}`]
+        args: ['global', 'add', `rui-app@${version}`]
       });
     });
 
