@@ -3,6 +3,10 @@ import downloadGitRepo from 'download-git-repo';
 import ora from 'ora';
 import fs from 'fs';
 import program from 'commander';
+import pkg from '../package.json';
+import chalk from 'chalk';
+
+const error = chalk.bold.red;
 
 interface TempMap {
   [K: string]: {
@@ -13,15 +17,8 @@ interface TempMap {
 
 interface Answers {
   template: string;
-  projectName: string;
 
   [k: string]: string;
-}
-
-interface TemplateInitOptions {
-  answers: Answers;
-  owner: string;
-  branch: string;
 }
 
 const tempMapConfig: TempMap = {
@@ -36,7 +33,6 @@ const tempMapConfig: TempMap = {
 };
 
 const questions = [
-  { name: 'projectName', message: '请输入项目名称', default: 'my-app' },
   {
     name: 'template', message: '请选择模板', type: 'list',
     choices: [
@@ -46,45 +42,36 @@ const questions = [
   }
 ];
 
-class TemplateInit {
-  public options: TemplateInitOptions;
-
-  constructor(options: TemplateInitOptions) {
-    this.options = options;
-  }
-
+const TemplateInit = {
   /**
-   * 初始化入口
+   * 创建目录名
+   * @param projectName
    */
-  async init() {
-    const { answers: { template, projectName }, owner, branch } = this.options;
-    if (this.isDirExist(projectName)) {
-      console.log('当前路径下存在同名的目录，请重新创建项目');
-      return;
-    }
-    const spinner = ora('fetch template....').start();
-    const res = await this.downloadRepo(
-      template, projectName, owner, branch
-    );
-    spinner.stop();
-    console.log(res);
-  }
-
-  /**
-   * 检查目录是否已存在
-   * @param dir
-   */
-  isDirExist(dir: string) {
+  async init(projectName = 'myApp') {
     try {
-      fs.statSync(process.cwd() + '/' + dir);
-      return true;
-    } catch (e) {
-      return false;
+      if (this.isDirExist(projectName)) {
+        console.log(error('当前路径下存在同名的目录，请重新创建项目'));
+        return;
+      }
+      const answers: Answers = await inquirer.prompt(questions); // 回答问题
+      const { template } = answers;
+      const { owner, branch } = tempMapConfig[template]; // 模板选择
+      const spinner = ora('fetch template....').start();
+      const res = await this.downloadRepo(
+        template, projectName, owner, branch
+      );
+      spinner.stop();
+      console.log(res);
+    } catch (err) {
+      console.log(error(err));
     }
-  }
-
+  },
   /**
-   * 拉取模板
+   * 从 github 拉取模板
+   * @param template
+   * @param projectName
+   * @param owner
+   * @param branch
    */
   downloadRepo(
     template: string, projectName: string, owner: string, branch: string
@@ -101,29 +88,46 @@ class TemplateInit {
         }
       );
     });
+  },
+  /**
+   * 检查目录是否存在
+   * @param dir
+   */
+  isDirExist(dir: string): boolean {
+    try {
+      fs.statSync(process.cwd() + '/' + dir);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
-}
+};
 
-function launcher() {
-  inquirer
-    .prompt(questions)
-    .then((answers: Answers) => {
-      const { template } = answers;
-      const temp = new TemplateInit({
-        ...tempMapConfig[template],
-        answers
-      });
-      temp.init();
-    })
-    .catch((error: string) => {
-      console.log('error', error);
-    });
-}
-
-function configCommander() {
+/**
+ * 配置 command
+ */
+function configCommand() {
   program
-    .version('0.0.1')
+    .version(pkg.version, '-v, --version')
+    .helpOption('-h, --help');
+
+  program
+    .command('init [projectName]')
+    .description('create your project')
+    .action(projectName => {
+      // 开始搞事情
+      TemplateInit.init(projectName);
+    });
+
+  program
+    .command('update')
+    .description('update rui-app')
+    .action(() => {
+      console.log('updating...');
+    });
+
+  program.parse(process.argv);
 }
 
-configCommander();
-
+// 主入口
+configCommand();

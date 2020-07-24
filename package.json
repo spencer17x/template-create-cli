@@ -10,9 +10,9 @@
   ],
   "scripts": {
     "commit": "git add . && git-cz",
-    "build": "rimraf dist && rollup -c && yarn build:type",
+    "build": "rimraf dist && concurrently \"rollup -c\" \"yarn build:type\"",
     "build:type": "tsc -p ./tsconfig.type.json",
-    "start": "yarn build --watch"
+    "start": "rimraf dist && rollup -c -w"
   },
   "bin": {
     "rui-app": "bin/index.js"
@@ -29,6 +29,7 @@
     "@types/commander": "^2.12.2",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^14.0.23",
+    "concurrently": "^5.2.0",
     "git-cz": "^3.3.0",
     "rollup": "^2.22.2",
     "ts-node": "^8.10.2",
