@@ -6,6 +6,7 @@ import program from 'commander';
 import pkg from '../package.json';
 import chalk from 'chalk';
 import install from './utils/install';
+import path from 'path';
 
 const error = chalk.bold.red;
 
@@ -69,6 +70,7 @@ const TemplateInit = {
       const res = await this.downloadRepo(
         template, projectName, owner, branch
       );
+      this.rewritePkg(projectName);
       spinner.stop();
       await install({
         pkgManager, projectName
@@ -112,6 +114,25 @@ const TemplateInit = {
     } catch (e) {
       return false;
     }
+  },
+  /**
+   * 写入 package.json 文件
+   * @param projectName
+   */
+  rewritePkg(projectName: string) {
+    const pkgPath = path.resolve(projectName, './package.json');
+    const result = fs.readFileSync(
+      pkgPath, {
+        encoding: 'utf8'
+      }
+    );
+    const pkgObject = JSON.parse(result) || {};
+    Object.assign(pkgObject, {
+      name: projectName
+    });
+    fs.writeFileSync(pkgPath, JSON.stringify(
+      pkgObject, null, 2
+    ));
   }
 };
 
