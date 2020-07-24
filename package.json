@@ -1,6 +1,6 @@
 {
   "name": "rui-app",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "main": "dist/index.js",
   "author": "Code.X <1253478653@qq.com>",
   "license": "MIT",
