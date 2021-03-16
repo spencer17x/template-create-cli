@@ -32,7 +32,11 @@ const tempMapConfig: TempMap = {
   'TypeScript-React-Starter': {
     owner: 'microsoft',
     branch: 'master'
-  }
+  },
+  'koa-generator': {
+    owner: 'i5ting',
+    branch: 'master'
+  },
 };
 
 const questions = [
@@ -40,7 +44,8 @@ const questions = [
     name: 'template', message: '请选择模板', type: 'list',
     choices: [
       'react-ui-template',
-      'TypeScript-React-Starter'
+      'TypeScript-React-Starter',
+      'koa-generator'
     ]
   },
   {
