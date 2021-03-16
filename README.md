@@ -14,4 +14,4 @@
 
 ## npx
 
-```npx init <projectName>```
+```npx rui-app init <projectName>```
